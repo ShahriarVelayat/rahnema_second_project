@@ -1,7 +1,9 @@
 ---
 - hosts: master
   become: true
+
   roles:
+    - role: commons
     - role: nginx
     - role: redis
       vars:
