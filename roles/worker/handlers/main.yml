@@ -1,0 +1,21 @@
+---
+- name: Restart Worker
+  systemd:
+    name: worker
+    daemon_reload: yes
+    state: restarted
+
+- name: Start Worker
+  systemd:
+    name: worker
+    state: started
+
+- name: Stop Worker
+  systemd:
+    name: worker
+    state: stopped
+
+- name: Enable Worker
+  systemd:
+    name: worker
+    enabled: yes

@@ -1,5 +1,62 @@
-# roles/example/tasks/main.yml
+---
+- name: install nginx server
+  apt:
+    name: nginx
+    update_cache: yes
+  notify:
+    - Restart nginx
 
-- name: Install the correct web server for Debian
-  import_tasks: debian.yml
-  when: ansible_facts['os_family']|lower == 'debian'
+- name: copy nginx configuration
+  ansible.builtin.template:
+    src: static_site.cfg
+    dest: /etc/nginx/sites-available/static_site.cfg
+    force: yes
+
+- name: create symlink
+  file:
+    src: /etc/nginx/sites-available/static_site.cfg
+    dest: /etc/nginx/sites-enabled/default
+    state: link
+
+- name: Creates directory
+  file:
+    path: /var/www/static-site/
+    state: directory
+
+- name: copy the content of the web site
+  ansible.builtin.template:
+    src: static-site-src/ansible-logo.jpg
+    dest: /var/www/static-site/ansible-logo.jpg
+    force: yes
+
+- name: copy the content of the web site
+  ansible.builtin.template:
+    src: static-site-src/index.html
+    dest: /var/www/static-site/index.html
+    force: yes
+
+- name: copy nginx configuration
+  ansible.builtin.template:
+    src: reverse_proxy_vote.cfg
+    dest: /etc/nginx/sites-available/reverse_proxy_vote.cfg
+    force: yes
+
+- name: create symlink
+  file:
+    src: /etc/nginx/sites-available/reverse_proxy_vote.cfg
+    dest: /etc/nginx/sites-enabled/reverse_proxy_vote.cfg
+    state: link
+
+- name: copy nginx configuration
+  ansible.builtin.template:
+    src: reverse_proxy_result.cfg
+    dest: /etc/nginx/sites-available/reverse_proxy_result.cfg
+    force: yes
+
+- name: create symlink
+  file:
+    src: /etc/nginx/sites-available/reverse_proxy_result.cfg
+    dest: /etc/nginx/sites-enabled/reverse_proxy_result.cfg
+    state: link
+  notify:
+    - Restart nginx

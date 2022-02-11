@@ -1,0 +1,11 @@
+---
+- name: Restart result-app
+  systemd:
+    name: result
+    state: restarted
+    daemon_reload: yes
+
+- name: Enable result-app
+  systemd:
+    name: result
+    enabled: yes

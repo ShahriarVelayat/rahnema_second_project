@@ -20,13 +20,9 @@
 
 - name: copy gunicorn configuration
   ansible.builtin.copy:
-    src: /home/shahriar/Desktop/workshop/vote.service
+    src: ../templates/vote.service
     dest: /etc/systemd/system/vote.service
     force: yes
-
-- name: restart vote service
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
-    name: vote
+  notify:
+    - Restart Vote-app
+    - Enable Vote-app

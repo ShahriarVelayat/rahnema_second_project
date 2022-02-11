@@ -32,13 +32,9 @@
 
 - name: copy gunicorn configuration
   ansible.builtin.copy:
-    src: /home/shahriar/Desktop/workshop/worker.service
+    src: ../templates/worker.service
     dest: /etc/systemd/system/worker.service
     force: yes
-
-- name: restart worker service
-  ansible.builtin.systemd:
-    state: restarted
-    daemon_reload: yes
-    enabled: yes
-    name: worker
+  notify:
+    - Restart Worker
+    - Enable Worker
