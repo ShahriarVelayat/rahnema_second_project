@@ -9,7 +9,7 @@ Vagrant.configure(2) do |config|
     
       vm_no.vm.box = IMAGE_2004
       vm_no.vm.hostname = "vm#{vm_id}.aruniq.ir"
-      vm_no.vm.network "public_network", ip: "192.168.1.21#{vm_id}"
+      vm_no.vm.network "public_network", ip: "192.168.1.10#{vm_id}"
       vm_no.vm.provider "virtualbox" do |v|  
         v.name = "vm#{vm_id}"
         v.memory = 2048

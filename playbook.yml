@@ -13,6 +13,7 @@
 - hosts: worker
   become: true
   roles:
+    - role: commons
     - role: postgres
       gather_facts: False
       vars:
