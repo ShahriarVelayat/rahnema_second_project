@@ -1,0 +1,31 @@
+---
+- hosts: master
+  become: true
+  roles:
+    - role: nginx
+    - role: redis
+      vars:
+        redis_password: 123456
+    - role: vote
+    - role: result
+- hosts: worker
+  become: true
+  roles:
+    - role: postgres
+      gather_facts: False
+      vars:
+        postgres_root_user: root
+        postgres_root_pass: 123456
+        db_name: "vote"
+        allow_world_readable_tmpfiles: true
+    - role: worker
+
+  #   - cloudalchemy.prometheus
+  # vars:
+  #   prometheus_targets:
+  #     node:
+  #       - targets:
+  #           - localhost:9100
+  #           - demo.cloudalchemy.org:9100
+  #         labels:
+  #           env: demosite

@@ -1,0 +1,32 @@
+---
+- name: clone python vote app
+  ansible.builtin.git:
+    repo: "https://hamgit.ir/shahriarvelayat/vote.git"
+    dest: /home/vagrant/vote
+    clone: yes
+
+- name: install pip
+  apt:
+    name: python3-pip
+    update_cache: yes
+
+- name: install pip requirments
+  pip:
+    requirements: /home/vagrant/vote/requirements.txt
+
+- name: install pip gunicorn
+  pip:
+    name: gunicorn
+
+- name: copy gunicorn configuration
+  ansible.builtin.copy:
+    src: /home/shahriar/Desktop/workshop/vote.service
+    dest: /etc/systemd/system/vote.service
+    force: yes
+
+- name: restart vote service
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    name: vote

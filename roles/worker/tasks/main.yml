@@ -1,0 +1,44 @@
+---
+- name: add dotnet repo
+  shell: wget https://packages.microsoft.com/config/ubuntu/20.04/packages-microsoft-prod.deb -O /home/vagrant/packages-microsoft-prod.deb
+
+- name: install dotnet
+  shell: dpkg -i /home/vagrant/packages-microsoft-prod.deb
+
+- name: remove dotnet deb
+  shell: rm /home/vagrant/packages-microsoft-prod.deb
+
+- name: install dotnet
+  apt:
+    update_cache: yes
+    pkg:
+      - apt-transport-https
+      - dotnet-sdk-3.1
+      - aspnetcore-runtime-6.0
+
+- name: clone worker app
+  ansible.builtin.git:
+    repo: "https://hamgit.ir/shahriarvelayat/worker.git"
+    dest: /home/vagrant/worker
+    clone: yes
+
+- name: clone worker app
+  ansible.builtin.git:
+    repo: "https://hamgit.ir/shahriarvelayat/worker.git"
+    dest: /home/vagrant/worker
+    clone: yes
+- name: build dotnet worker app
+  shell: "dotnet publish -c Release -o /home/vagrant/worker/out /home/vagrant/worker/Worker.csproj"
+
+- name: copy gunicorn configuration
+  ansible.builtin.copy:
+    src: /home/shahriar/Desktop/workshop/worker.service
+    dest: /etc/systemd/system/worker.service
+    force: yes
+
+- name: restart worker service
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    name: worker

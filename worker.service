@@ -1,0 +1,26 @@
+[Unit]
+Description=Dotnet Worker service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+
+Environment="pgsql_server=127.0.0.1"
+Environment="pgsql_user=root"
+Environment="pgsql_pass=123456"
+Environment="pgsql_port=5432"
+Environment="pgsql_database=vote"
+
+
+Environment="redis_server=192.168.1.211"
+Environment="redis_port=6379"
+Environment="redis_pass=123456"
+
+RestartSec=1
+User=root
+ExecStart=/usr/bin/dotnet /home/vagrant/worker/out/Worker.dll
+
+
+[Install]
+WantedBy=multi-user.target

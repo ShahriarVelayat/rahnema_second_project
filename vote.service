@@ -1,0 +1,20 @@
+[Unit]
+Description=Python3 Vote service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+Environment="OPTION_A=frontend"
+Environment="OPTION_B=backend"
+Environment="PORT=3000"
+Environment="REDIS_HOST=localhost"
+Environment="REDIST_PORT=6379"
+Environment="REDIST_PASS=123456"
+RestartSec=1
+User=root
+ExecStart=/usr/local/bin/gunicorn --chdir /home/vagrant/vote app:app -b 0.0.0.0:${PORT} --log-file - --access-logfile - --workers 4 --keep-alive 0
+
+
+[Install]
+WantedBy=multi-user.target

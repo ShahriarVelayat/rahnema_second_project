@@ -1,0 +1,36 @@
+---
+- name: Run the equivalent of "apt-get update" as a separate step
+  apt:
+    update_cache: yes
+- name: Ansible shell module multiple commands
+  shell: "curl -fsSL https://deb.nodesource.com/setup_10.x | sudo -E bash -"
+- name: Install reqired packages
+  apt: name={{ item }} state=present
+  with_items:
+    - git
+    - curl
+    - wget
+    - nginx
+    - nodejs
+- name: clone node result app
+  ansible.builtin.git:
+    repo: "https://hamgit.ir/shahriarvelayat/result.git"
+    dest: /home/vagrant/result
+    clone: yes
+
+- name: install nodejs requirments
+  community.general.npm:
+    path: /home/vagrant/result
+
+- name: copy result service
+  ansible.builtin.copy:
+    src: /home/shahriar/Desktop/workshop/result.service
+    dest: /etc/systemd/system/result.service
+    force: yes
+
+- name: restart result service
+  ansible.builtin.systemd:
+    state: restarted
+    daemon_reload: yes
+    enabled: yes
+    name: result

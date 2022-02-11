@@ -1,0 +1,19 @@
+[Unit]
+Description=Python3 Vote service
+After=network.target
+StartLimitIntervalSec=0
+[Service]
+Type=simple
+Restart=always
+Environment="PORT=4000"
+Environment="POSTGRESS_HOST=192.168.1.212"
+Environment="POSTGRESS_NAME=vote"
+Environment="POSTGRESS_USERNAME=root"
+Environment="POSTGRESS_PASSWORD=123456"
+RestartSec=1
+User=root
+ExecStart=/usr/bin/node /home/vagrant/result/server.js
+
+
+[Install]
+WantedBy=multi-user.target
