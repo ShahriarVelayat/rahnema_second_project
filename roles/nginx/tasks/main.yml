@@ -2,7 +2,6 @@
 - name: install nginx server
   apt:
     name: nginx
-    update_cache: yes
   notify:
     - Restart nginx
 

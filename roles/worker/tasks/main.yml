@@ -10,7 +10,6 @@
 
 - name: install dotnet
   apt:
-    update_cache: yes
     pkg:
       - apt-transport-https
       - dotnet-sdk-3.1
