@@ -1,6 +1,5 @@
 ---
 # - hosts: monitoring
-
 #   roles:
 #     - role: cloudalchemy.prometheus
 #       vars:
@@ -27,6 +26,7 @@
 #               - targets:
 #                   - localhost
 #                 labels:
+#                   host: "monitoring"
 #                   job: varlogs
 #                   __path__: /var/log/*log
 #         promtail_loki_server_url: "http://localhost:3100"
@@ -37,27 +37,28 @@
 #         loki_base_dir: /opt/loki
 #       become: true
 # - hosts: master
-# become: true
-# roles:
-#   - role: commons
-#   - role: nginx
-#   - role: redis
-#     vars:
-#       redis_password: 123456
-#   - role: vote
-#   - role: result
-#   - role: cloudalchemy.node_exporter
-#   - role: patrickjahns.promtail
-#     vars:
-#       promtail_config_scrape_configs:
-#         - job_name: system
-#           static_configs:
-#             - targets:
-#                 - localhost
-#               labels:
-#                 job: varlogs
-#                 __path__: /var/log/*log
-#       promtail_loki_server_url: "http://192.168.50.15:3100"
+#   become: true
+#   roles:
+#     - role: commons
+#     - role: nginx
+#     - role: redis
+#       vars:
+#         redis_password: 123456
+#     - role: vote
+#     - role: result
+#     - role: cloudalchemy.node_exporter
+#     - role: patrickjahns.promtail
+#       vars:
+#         promtail_config_scrape_configs:
+#           - job_name: system
+#             static_configs:
+#               - targets:
+#                   - localhost
+#                 labels:
+#                   host: "vote"
+#                   job: varlogs
+#                   __path__: /var/log/*log
+#         promtail_loki_server_url: "http://192.168.50.15:3100"
 - hosts: worker
   become: true
   roles:
@@ -79,6 +80,7 @@
               - targets:
                   - localhost
                 labels:
+                  host: "worker"
                   job: varlogs
                   __path__: /var/log/*log
         promtail_loki_server_url: "http://192.168.50.15:3100"

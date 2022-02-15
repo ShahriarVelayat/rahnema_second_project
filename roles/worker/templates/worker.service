@@ -13,7 +13,7 @@ Environment="pgsql_port=5432"
 Environment="pgsql_database=vote"
 
 
-Environment="redis_server=192.168.1.211"
+Environment="redis_server=192.168.50.13"
 Environment="redis_port=6379"
 Environment="redis_pass=123456"
 
