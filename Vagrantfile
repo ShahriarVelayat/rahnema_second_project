@@ -1,27 +1,30 @@
-IMAGE_2004 = "ubuntu/focal64"
 
-ENV['VAGRANT_NO_PARALLEL'] = 'yes'
+VAGRANTFILE_API_VERSION = "2"
 
-Vagrant.configure(2) do |config|
-  VmCounts = 2
-  (1..VmCounts).each do |vm_id|
-    config.vm.define "vm#{vm_id}" do |vm_no|
-    
-      vm_no.vm.box = IMAGE_2004
-      vm_no.vm.hostname = "vm#{vm_id}.aruniq.ir"
-      vm_no.vm.network "public_network", ip: "192.168.1.10#{vm_id}"
-      vm_no.vm.provider "virtualbox" do |v|  
-        v.name = "vm#{vm_id}"
-        v.memory = 2048
-        v.cpus = 2
-      end
+cluster = {
+  "master" => { :ip => "192.168.50.10", :cpus => 1, :mem => 1024 },
+  "slave" => { :ip => "192.168.50.11", :cpus => 1, :mem => 1024 }
+}
+ 
+Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
+
+  cluster.each_with_index do |(hostname, info), index|
+
+    config.vm.define hostname do |cfg|
+      cfg.vm.provider :virtualbox do |vb, override|
+        config.vm.box = "ubuntu/focal64"
+        override.vm.network :private_network, ip: "#{info[:ip]}"
+        override.vm.hostname = hostname
+        vb.name = hostname
+        vb.customize ["modifyvm", :id, "--memory", info[:mem], "--cpus", info[:cpus], "--hwvirtex", "on"]
+      end # end provider
+    end # end config
+    config.vm.provision "shell" do |s|
+      ssh_pub_key = File.readlines("/home/shahriar/Desktop/shahriar_main.pub").first.strip
+      s.inline = <<-SHELL
+        echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
+        echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
+      SHELL
     end
-  end
-config.vm.provision "shell" do |s|
-  ssh_pub_key = File.readlines("/home/shahriar/Desktop/shahriar_main.pub").first.strip
-  s.inline = <<-SHELL
-    echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
-    echo #{ssh_pub_key} >> /root/.ssh/authorized_keys
-  SHELL
-end
+  end # end cluster
 end
