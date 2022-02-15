@@ -9,3 +9,24 @@
   apt:
     upgrade: dist
     force_apt_get: yes
+- name: Set up Postgres 12 repo
+  shell: |
+    curl -fsSL https://get.docker.com -o get-docker.sh
+
+  args:
+    warn: no
+
+- name: install pip
+  apt:
+    name: python3-pip
+
+- name: Set up Postgres 12 repo
+  shell: |
+    sh get-docker.sh
+
+  args:
+    warn: no
+
+- name: Install Docker Module for Python
+  pip:
+    name: docker

@@ -42,3 +42,18 @@
     state: present
   notify:
     - Restart Redis
+
+- name: Pull redis_exporter Docker image
+  docker_image:
+    name: "oliver006/redis_exporter"
+    source: pull
+
+- name: Create a redis_exporter container
+  docker_container:
+    name: redis_exporter
+    image: oliver006/redis_exporter
+    ports:
+      - "9121:9121"
+    env:
+      REDIS_PASSWORD: "123456"
+      REDIS_ADDR: "192.168.50.13"

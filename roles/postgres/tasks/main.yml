@@ -63,3 +63,17 @@
     login_user: "{{ postgres_root_user }}"
     login_password: "{{ postgres_root_pass }}"
     name: "{{ db_name }}"
+
+- name: Pull postgres-exporter Docker image
+  docker_image:
+    name: "quay.io/prometheuscommunity/postgres-exporter"
+    source: pull
+
+- name: Create a postgres-exporter container
+  docker_container:
+    name: postgres-exporter
+    image: quay.io/prometheuscommunity/postgres-exporter
+    ports:
+      - "9187:9187"
+    env:
+      DATA_SOURCE_NAME: "postgresql://{{ postgres_root_user }}:{{ postgres_root_pass }}@localhost:5432/ ?sslmode=disable"
