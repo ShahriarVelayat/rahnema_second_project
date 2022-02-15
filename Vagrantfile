@@ -2,8 +2,9 @@
 VAGRANTFILE_API_VERSION = "2"
 
 cluster = {
-  "master" => { :ip => "192.168.50.10", :cpus => 1, :mem => 1024 },
-  "slave" => { :ip => "192.168.50.11", :cpus => 1, :mem => 1024 }
+  "master" => { :ip => "192.168.50.13", :cpus => 1, :mem => 1024 },
+  "slave" => { :ip => "192.168.50.14", :cpus => 1, :mem => 1024 },
+  "monitoring" => { :ip => "192.168.50.15", :cpus => 1, :mem => 1024 },
 }
  
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
@@ -20,7 +21,7 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end # end provider
     end # end config
     config.vm.provision "shell" do |s|
-      ssh_pub_key = File.readlines("/home/shahriar/Desktop/shahriar_main.pub").first.strip
+      ssh_pub_key = File.readlines("shahriar_main_without_pass.pub").first.strip
       s.inline = <<-SHELL
         echo #{ssh_pub_key} >> /home/vagrant/.ssh/authorized_keys
         echo #{ssh_pub_key} >> /root/.ssh/authorized_keys

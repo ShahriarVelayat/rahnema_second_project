@@ -1,15 +1,63 @@
 ---
-- hosts: master
-  become: true
+# - hosts: monitoring
 
-  roles:
-    - role: commons
-    - role: nginx
-    - role: redis
-      vars:
-        redis_password: 123456
-    - role: vote
-    - role: result
+#   roles:
+#     - role: cloudalchemy.prometheus
+#       vars:
+#         prometheus_targets:
+#           node:
+#             - targets:
+#                 - localhost:9100
+#                 - 192.168.50.13:9100
+#                 - 192.168.50.14:9100
+#               labels:
+#                 env: demosite
+#     - role: cloudalchemy.node_exporter
+#     - role: cloudalchemy.grafana
+#       vars:
+#         grafana_security:
+#           admin_user: admin
+#           admin_password: admin_admin
+#       roles:
+#     - role: patrickjahns.promtail
+#       vars:
+#         promtail_config_scrape_configs:
+#           - job_name: system
+#             static_configs:
+#               - targets:
+#                   - localhost
+#                 labels:
+#                   job: varlogs
+#                   __path__: /var/log/*log
+#         promtail_loki_server_url: "http://localhost:3100"
+
+#     - role: ansible-loki
+#       vars:
+#         loki_version: "2.4.2"
+#         loki_base_dir: /opt/loki
+#       become: true
+# - hosts: master
+# become: true
+# roles:
+#   - role: commons
+#   - role: nginx
+#   - role: redis
+#     vars:
+#       redis_password: 123456
+#   - role: vote
+#   - role: result
+#   - role: cloudalchemy.node_exporter
+#   - role: patrickjahns.promtail
+#     vars:
+#       promtail_config_scrape_configs:
+#         - job_name: system
+#           static_configs:
+#             - targets:
+#                 - localhost
+#               labels:
+#                 job: varlogs
+#                 __path__: /var/log/*log
+#       promtail_loki_server_url: "http://192.168.50.15:3100"
 - hosts: worker
   become: true
   roles:
@@ -22,3 +70,15 @@
         db_name: "vote"
         allow_world_readable_tmpfiles: true
     - role: worker
+    - role: cloudalchemy.node_exporter
+    - role: patrickjahns.promtail
+      vars:
+        promtail_config_scrape_configs:
+          - job_name: system
+            static_configs:
+              - targets:
+                  - localhost
+                labels:
+                  job: varlogs
+                  __path__: /var/log/*log
+        promtail_loki_server_url: "http://192.168.50.15:3100"

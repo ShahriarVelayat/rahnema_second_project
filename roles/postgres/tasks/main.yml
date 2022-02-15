@@ -7,10 +7,17 @@
       - acl
     state: latest
 
-- name: Set up Postgres 14 repo
+- name: Set up Postgres 12 repo
   shell: |
-    echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list
+    sudo sh -c 'echo "deb http://apt.postgresql.org/pub/repos/apt $(lsb_release -cs)-pgdg main" > /etc/apt/sources.list.d/pgdg.list'
+
+  args:
+    warn: no
+
+- name: Set up Postgres 12 repo
+  shell: |
     wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+
   args:
     warn: no
 
