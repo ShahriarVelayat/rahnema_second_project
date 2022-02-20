@@ -13,7 +13,7 @@ Environment="REDIST_PORT=6379"
 Environment="REDIST_PASS=123456"
 RestartSec=1
 User=root
-ExecStart=/usr/local/bin/gunicorn --chdir /home/vagrant/vote app:app -b 0.0.0.0:${PORT} --log-file - --access-logfile - --workers 4 --keep-alive 0
+ExecStart=/usr/local/bin/gunicorn --chdir /home/ubuntu/vote app:app -b 0.0.0.0:${PORT} --log-file - --access-logfile - --workers 4 --keep-alive 0
 
 
 [Install]

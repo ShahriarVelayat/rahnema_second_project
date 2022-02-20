@@ -7,10 +7,11 @@
           node:
             - targets:
                 - localhost:9100
-                - 192.168.50.13:9100
-                - 192.168.50.14:9100
-                - 192.168.50.13:9121
-                - 192.168.50.14:9187
+                - result.aruniq.ir:9100
+                - result.aruniq.ir:8086
+                - worker.aruniq.ir:9100
+                - result.aruniq.ir:9121
+                - worker.aruniq.ir:9187
               labels:
                 env: demosite
     - role: cloudalchemy.node_exporter
@@ -62,7 +63,7 @@
                   host: "worker"
                   job: varlogs
                   __path__: /var/log/*log
-        promtail_loki_server_url: "http://192.168.50.15:3100"
+        promtail_loki_server_url: "http://grafana.aruniq.ir:3100"
 
 - hosts: master
   become: true
@@ -86,4 +87,4 @@
                   host: "vote"
                   job: varlogs
                   __path__: /var/log/*log
-        promtail_loki_server_url: "http://192.168.50.15:3100"
+        promtail_loki_server_url: "http://grafana.aruniq.ir:3100"

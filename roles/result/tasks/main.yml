@@ -12,12 +12,12 @@
 - name: clone node result app
   ansible.builtin.git:
     repo: "https://hamgit.ir/shahriarvelayat/result.git"
-    dest: /home/vagrant/result
+    dest: /home/ubuntu/result
     clone: yes
 
 - name: install nodejs requirments
   community.general.npm:
-    path: /home/vagrant/result
+    path: /home/ubuntu/result
 
 - name: copy result service
   ansible.builtin.copy:

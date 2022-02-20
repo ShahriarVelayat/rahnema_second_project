@@ -59,3 +59,53 @@
     state: link
   notify:
     - Restart nginx
+
+- name: Pull geostat Docker image
+  docker_image:
+    name: "svelayat/geostat:latest"
+    source: pull
+
+- name: Pull influxdb Docker image
+  docker_image:
+    name: "dockerhub.ir/influxdb:1.8"
+    source: pull
+
+- name: Creates directory
+  file:
+    path: /opt/geostat
+    state: directory
+
+- name: copy the geostat settings
+  ansible.builtin.template:
+    src: settings.ini
+    dest: /opt/geostat/settings.ini
+    force: yes
+- name: Create a network
+  docker_network:
+    name: influx-network
+
+- name: Create a influxdb container
+  docker_container:
+    name: influxdb
+    image: dockerhub.ir/influxdb:1.8
+    ports:
+      - "8086:8086"
+    networks:
+      - name: "influx-network"
+    env:
+      DOCKER_INFLUXDB_INIT_PASSWORD: "admin"
+      DOCKER_INFLUXDB_INIT_USERNAME: "admin"
+    volumes:
+      - /var/lib/influxdb:/var/lib/influxdb
+
+- name: Create a geostat container
+  docker_container:
+    name: geostat
+    image: svelayat/geostat:latest
+    # ports:
+    # - "8086:8086"
+    volumes:
+      - /opt/geostat/settings.ini:/settings.ini
+      - /var/log/nginx/access.log:/var/log/nginx/access.log
+    networks:
+      - name: "influx-network"

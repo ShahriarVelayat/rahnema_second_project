@@ -13,13 +13,13 @@ Environment="pgsql_port=5432"
 Environment="pgsql_database=vote"
 
 
-Environment="redis_server=192.168.50.13"
+Environment="redis_server=result.aruniq.ir"
 Environment="redis_port=6379"
 Environment="redis_pass=123456"
 
 RestartSec=1
 User=root
-ExecStart=/usr/bin/dotnet /home/vagrant/worker/out/Worker.dll
+ExecStart=/usr/bin/dotnet /home/ubuntu/worker/out/Worker.dll
 
 
 [Install]

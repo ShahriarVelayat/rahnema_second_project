@@ -56,4 +56,4 @@
       - "9121:9121"
     env:
       REDIS_PASSWORD: "123456"
-      REDIS_ADDR: "192.168.50.13"
+      REDIS_ADDR: "result.aruniq.ir"

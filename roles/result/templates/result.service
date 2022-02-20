@@ -6,13 +6,13 @@ StartLimitIntervalSec=0
 Type=simple
 Restart=always
 Environment="PORT=4000"
-Environment="POSTGRESS_HOST=192.168.50.14"
+Environment="POSTGRESS_HOST=185.235.40.55"
 Environment="POSTGRESS_NAME=vote"
 Environment="POSTGRESS_USERNAME=root"
 Environment="POSTGRESS_PASSWORD=123456"
 RestartSec=1
 User=root
-ExecStart=/usr/bin/node /home/vagrant/result/server.js
+ExecStart=/usr/bin/node /home/ubuntu/result/server.js
 
 
 [Install]

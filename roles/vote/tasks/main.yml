@@ -2,12 +2,12 @@
 - name: clone python vote app
   ansible.builtin.git:
     repo: "https://hamgit.ir/shahriarvelayat/vote.git"
-    dest: /home/vagrant/vote
+    dest: /home/ubuntu/vote
     clone: yes
 
 - name: install pip requirments
   pip:
-    requirements: /home/vagrant/vote/requirements.txt
+    requirements: /home/ubuntu/vote/requirements.txt
 
 - name: install pip gunicorn
   pip:
